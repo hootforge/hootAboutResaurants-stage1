@@ -27,22 +27,18 @@ self.addEventListener('fetch', function(event) { //google's offline cookbook hel
         if (response){
           return response;
         }
-
         return fetch(event.request).then(
           function(response){
             // Check for good response
             if(!response || response.status !== 200 || response.type !== 'basic') {
               return response;
             }
-
             // Cloning response to save copy
             var responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
+            caches.open(restCache)
               .then(function(cache) {
                 cache.put(event.request, responseToCache);
               });
-
             return response;
           }
         );
